@@ -14,7 +14,7 @@ public class AddUserRequest {
     private Long idDocument;
     private Long phoneNumber;
     private String email;
-    private int roleId;
+    private Integer roleId;
     private String password;
 
 }

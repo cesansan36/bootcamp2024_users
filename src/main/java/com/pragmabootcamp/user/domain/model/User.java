@@ -9,7 +9,9 @@ public class User {
     private final Long phoneNumber;
     private final String email;
     private final Role role;
-    private final String password;
+
+
+    private String password;
 
     public User(Long id, String firstName, String lastName, Long idDocument, Long phoneNumber, String email, Role role, String password) {
         this.id = id;
@@ -52,5 +54,8 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

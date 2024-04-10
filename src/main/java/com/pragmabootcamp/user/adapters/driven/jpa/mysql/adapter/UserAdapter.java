@@ -15,11 +15,10 @@ public class UserAdapter implements IUserPersistencePort {
 
     @Override
     public void saveUser(User user) {
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            // TODO custom exception
-            throw new RuntimeException("User already exists");
-        }
-
+//        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+//            // TODO custom exception
+//            throw new RuntimeException("User already exists");
+//        }
         userRepository.save(userEntityMapper.toUserEntity(user));
     }
 
