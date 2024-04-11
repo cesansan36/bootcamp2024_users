@@ -4,6 +4,6 @@ import com.pragmabootcamp.user.domain.model.User;
 
 public interface IUserServicePort {
 
-    void saveUser(User user);
+    String saveUser(User user);
     void getUser(String email);
 }

@@ -26,13 +26,12 @@ public class UserControllerAdapter {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerAdmin(@RequestBody AddUserRequest request) {
-        userServicePort.saveUser(userRequestMapper.addUserRequestToUser(request));
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> registerAdmin(@RequestBody AddUserRequest request) {
+        return ResponseEntity.ok(userServicePort.saveUser(userRequestMapper.addUserRequestToUser(request)));
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<UserResponse> loginAdmin(@RequestBody AddUserRequest request) {
-//
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<String> loginAdmin() {
+        return ResponseEntity.ok("✨ こんにちわ");
+    }
 }

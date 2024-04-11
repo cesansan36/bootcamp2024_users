@@ -10,6 +10,9 @@ spring:
     hibernate:
       ddl-auto: update
 
+#security:
+#  jwtSecretKey: 2d20517c794c53617a3a6e4b6b61367b6222204d6d64402c6375496d475f6244
+#
 application:
   security:
     jwt:
