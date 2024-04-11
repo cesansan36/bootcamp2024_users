@@ -23,6 +23,11 @@ public class UserAdapter implements IUserPersistencePort {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    @Override
     public User getUser(String email) {
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow();
         return userEntityMapper.toUser(userEntity);

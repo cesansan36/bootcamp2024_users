@@ -53,15 +53,15 @@ public class BeanConfiguration {
     }
 
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return username -> userEntityMapper.toUser(userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User not found")));
-//    }
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-//        authProvider.setUserDetailsService(userDetailsService());
-//        authProvider.setPasswordEncoder(passwordEncoder());
-//        return authProvider;
-//    }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> userEntityMapper.toUser(userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User not found")));
+    }
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
 }

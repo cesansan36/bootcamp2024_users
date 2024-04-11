@@ -32,6 +32,11 @@ public class UserControllerAdapter {
 
     @PostMapping("/login")
     public ResponseEntity<String> loginAdmin() {
-        return ResponseEntity.ok("✨ こんにちわ");
+        return ResponseEntity.ok("string normal");
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<String> testEndpoint() {
+        return ResponseEntity.ok("string normal");
     }
 }

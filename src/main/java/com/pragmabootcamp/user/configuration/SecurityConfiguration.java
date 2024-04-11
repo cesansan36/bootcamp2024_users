@@ -24,8 +24,8 @@ public class SecurityConfiguration {
         "/users/admin/register"
     };
 
-//    private final AuthenticationProvider authenticationProvider;
-//    private final JwtAuthenticationFilter filter;
+    private final AuthenticationProvider authenticationProvider;
+    private final JwtAuthenticationFilter filter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -38,9 +38,9 @@ public class SecurityConfiguration {
 //                        .requestMatchers(HttpMethod.POST, "/users/admin/login"))
 
                 )
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authenticationProvider(authenticationProvider)
-//                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
 
         ;
 

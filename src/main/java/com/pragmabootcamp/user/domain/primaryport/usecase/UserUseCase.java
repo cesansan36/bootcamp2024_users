@@ -20,6 +20,12 @@ public class UserUseCase implements IUserServicePort {
 
     @Override
     public String saveUser(User user) {
+
+        if (userPersistencePort.existsByEmail(user.getEmail())) {
+            // TODO custom exception
+            throw new RuntimeException("User already exists");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userPersistencePort.saveUser(user);
 
