@@ -3,7 +3,6 @@ package com.pragmabootcamp.user.configuration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,16 +11,19 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableMethodSecurity
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
 
     private static final String[] WHITE_LIST = {
-        "/users/admin/register"
+        "/users/register/admin",
+        "/users/login"
+    };
+    private static final String[] ADMIN_LIST = {
+            "/users/register/tutor"
     };
 
     private final AuthenticationProvider authenticationProvider;
@@ -33,9 +35,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(WHITE_LIST)
                         .permitAll()
+//                        .requestMatchers("/users/register/tutor").hasRole("ADMIN")
                         .anyRequest()
                         .authenticated()
-//                        .requestMatchers(HttpMethod.POST, "/users/admin/login"))
 
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

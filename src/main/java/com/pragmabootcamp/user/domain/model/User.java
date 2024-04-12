@@ -17,7 +17,6 @@ public class User implements UserDetails {
     private final String email;
     private final Role role;
 
-
     private String password;
 
     public User(Long id, String firstName, String lastName, Long idDocument, Long phoneNumber, String email, Role role, String password) {
@@ -70,7 +69,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getName()));
+
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.getName()));
     }
 
     @Override

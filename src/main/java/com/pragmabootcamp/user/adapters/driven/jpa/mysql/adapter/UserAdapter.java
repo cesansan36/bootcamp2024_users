@@ -7,6 +7,8 @@ import com.pragmabootcamp.user.domain.model.User;
 import com.pragmabootcamp.user.domain.secondaryport.IUserPersistencePort;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class UserAdapter implements IUserPersistencePort {
 
@@ -15,10 +17,6 @@ public class UserAdapter implements IUserPersistencePort {
 
     @Override
     public void saveUser(User user) {
-//        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-//            // TODO custom exception
-//            throw new RuntimeException("User already exists");
-//        }
         userRepository.save(userEntityMapper.toUserEntity(user));
     }
 
@@ -28,8 +26,8 @@ public class UserAdapter implements IUserPersistencePort {
     }
 
     @Override
-    public User getUser(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow();
-        return userEntityMapper.toUser(userEntity);
+    public Optional<User> getUser(String email) {
+        Optional<UserEntity> userEntity = userRepository.findByEmail(email);
+        return userEntity.map(userEntityMapper::toUser);
     }
 }
