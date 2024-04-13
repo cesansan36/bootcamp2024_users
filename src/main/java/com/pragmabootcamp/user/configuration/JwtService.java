@@ -1,7 +1,7 @@
 package com.pragmabootcamp.user.configuration;
 
+import com.pragmabootcamp.user.adapters.authentication.UserAuth;
 import com.pragmabootcamp.user.domain.authentication.ITokenService;
-import com.pragmabootcamp.user.domain.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -91,7 +91,7 @@ public class JwtService implements ITokenService {
     }
 
     @Override
-    public String generateToken(User userDetails) {
-        return generateJwtToken(userDetails);
+    public String generateToken(UserAuth userAuthDetails) {
+        return generateJwtToken(userAuthDetails);
     }
 }

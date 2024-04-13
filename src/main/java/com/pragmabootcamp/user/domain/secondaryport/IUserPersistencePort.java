@@ -1,13 +1,13 @@
 package com.pragmabootcamp.user.domain.secondaryport;
 
-import com.pragmabootcamp.user.domain.model.User;
+import com.pragmabootcamp.user.adapters.authentication.UserAuth;
 
 import java.util.Optional;
 
 public interface IUserPersistencePort {
 
-    void saveUser(User user);
+    void saveUser(UserAuth userAuth);
 
     boolean existsByEmail(String email);
-    Optional<User> getUser(String email);
+    Optional<UserAuth> getUser(String email);
 }

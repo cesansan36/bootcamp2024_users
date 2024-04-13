@@ -7,7 +7,9 @@ import com.pragmabootcamp.user.adapters.driven.jpa.mysql.mapper.IUserEntityMappe
 import com.pragmabootcamp.user.adapters.driven.jpa.mysql.repository.IRoleRepository;
 import com.pragmabootcamp.user.adapters.driven.jpa.mysql.repository.IUserRepository;
 import com.pragmabootcamp.user.domain.authentication.ITokenService;
-import com.pragmabootcamp.user.domain.primaryport.IUserServicePort;
+import com.pragmabootcamp.user.adapters.authentication.IUserAuthServ;
+import com.pragmabootcamp.user.adapters.authentication.UserAuthServ;
+import com.pragmabootcamp.user.domain.primaryport.usecase.IUserPrimaryPort;
 import com.pragmabootcamp.user.domain.primaryport.usecase.UserUseCase;
 import com.pragmabootcamp.user.domain.secondaryport.IRolePersistencePort;
 import com.pragmabootcamp.user.domain.secondaryport.IUserPersistencePort;
@@ -45,8 +47,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IUserServicePort userServicePort() throws Exception {
-        return new UserUseCase(userPersistencePort(), passwordEncoder(), tokenService, authenticationManager());
+    public IUserAuthServ userServicePort() throws Exception {
+        return new UserAuthServ(userPersistencePort(), passwordEncoder(), tokenService, authenticationManager());
     }
 
     @Bean
@@ -57,7 +59,7 @@ public class BeanConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userEntityMapper.toUser(userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User not found")));
+        return username -> userEntityMapper.toUser(userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("UserAuth not found")));
     }
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -70,5 +72,15 @@ public class BeanConfiguration {
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public IUserAuthServ userAuthServ() throws Exception {
+        return new UserAuthServ(userPersistencePort(), passwordEncoder(), tokenService, authenticationManager());
+    }
+
+    @Bean
+    public IUserPrimaryPort userPrimaryPort() throws Exception {
+        return new UserUseCase( userAuthServ());
     }
 }

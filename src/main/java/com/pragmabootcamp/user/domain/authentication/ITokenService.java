@@ -1,9 +1,9 @@
 package com.pragmabootcamp.user.domain.authentication;
 
 
-import com.pragmabootcamp.user.domain.model.User;
+import com.pragmabootcamp.user.adapters.authentication.UserAuth;
 
 public interface ITokenService {
 
-    String generateToken(User userDetails);
+    String generateToken(UserAuth userAuthDetails);
 }

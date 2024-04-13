@@ -6,7 +6,8 @@ import com.pragmabootcamp.user.adapters.driving.http.rest.dto.response.UserRespo
 import com.pragmabootcamp.user.adapters.driving.http.rest.mapper.IUserRequestMapper;
 import com.pragmabootcamp.user.adapters.driving.http.rest.mapper.IUserResponseMapper;
 import com.pragmabootcamp.user.adapters.driving.http.rest.util.ControllerAdapterConstants;
-import com.pragmabootcamp.user.domain.primaryport.IUserServicePort;
+import com.pragmabootcamp.user.adapters.authentication.IUserAuthServ;
+import com.pragmabootcamp.user.domain.primaryport.usecase.IUserPrimaryPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserControllerAdapter {
 
-    private final IUserServicePort userServicePort;
+    private final IUserPrimaryPort userServicePort;
     private final IUserRequestMapper userRequestMapper;
     private final IUserResponseMapper userResponseMapper;
 
-    public UserControllerAdapter(IUserServicePort userServicePort, IUserRequestMapper userRequestMapper, IUserResponseMapper userResponseMapper) {
+    public UserControllerAdapter(IUserPrimaryPort userServicePort, IUserRequestMapper userRequestMapper, IUserResponseMapper userResponseMapper) {
         this.userServicePort = userServicePort;
         this.userRequestMapper = userRequestMapper;
         this.userResponseMapper = userResponseMapper;
