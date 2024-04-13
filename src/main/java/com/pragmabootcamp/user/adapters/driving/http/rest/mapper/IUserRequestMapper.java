@@ -4,6 +4,7 @@ import com.pragmabootcamp.user.adapters.authentication.UserAuth;
 import com.pragmabootcamp.user.adapters.driving.http.rest.dto.request.AddUserRequest;
 import com.pragmabootcamp.user.adapters.driving.http.rest.dto.request.LoginUserRequest;
 import com.pragmabootcamp.user.domain.model.Role;
+import com.pragmabootcamp.user.domain.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -13,7 +14,7 @@ public interface IUserRequestMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "roleId", target = "role", qualifiedByName = "mapRole")
-    UserAuth addUserRequestToUser(AddUserRequest request, int roleId);
+    User addUserRequestToUser(AddUserRequest request, int roleId);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "firstName", constant = "transfer")
@@ -21,7 +22,7 @@ public interface IUserRequestMapper {
     @Mapping(target = "idDocument", ignore = true)
     @Mapping(target = "phoneNumber", ignore = true)
     @Mapping(target = "role", ignore = true)
-    UserAuth loginUserRequestToUser(LoginUserRequest request);
+    User loginUserRequestToUser(LoginUserRequest request);
 
     @Named("mapRole")
     default Role mapRole(int roleId) {

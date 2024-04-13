@@ -1,5 +1,6 @@
 package com.pragmabootcamp.user.configuration;
 
+import com.pragmabootcamp.user.adapters.authentication.IUserAuthMapper;
 import com.pragmabootcamp.user.adapters.driven.jpa.mysql.adapter.RoleAdapter;
 import com.pragmabootcamp.user.adapters.driven.jpa.mysql.adapter.UserAdapter;
 import com.pragmabootcamp.user.adapters.driven.jpa.mysql.mapper.IRoleEntityMapper;
@@ -32,6 +33,7 @@ public class BeanConfiguration {
     private final IRoleEntityMapper roleEntityMapper;
     private final IUserRepository userRepository;
     private final IUserEntityMapper userEntityMapper;
+    private final IUserAuthMapper userAuthMapper;
     private final ITokenService tokenService;
     private final AuthenticationConfiguration config;
 
@@ -46,10 +48,10 @@ public class BeanConfiguration {
         return new UserAdapter(userRepository, userEntityMapper);
     }
 
-    @Bean
-    public IUserAuthServ userServicePort() throws Exception {
-        return new UserAuthServ(userPersistencePort(), passwordEncoder(), tokenService, authenticationManager());
-    }
+//    @Bean
+//    public IUserAuthServ userServicePort() throws Exception {
+//        return new UserAuthServ(userPersistencePort(), passwordEncoder(), tokenService, authenticationManager());
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -76,11 +78,11 @@ public class BeanConfiguration {
 
     @Bean
     public IUserAuthServ userAuthServ() throws Exception {
-        return new UserAuthServ(userPersistencePort(), passwordEncoder(), tokenService, authenticationManager());
+        return new UserAuthServ(userPersistencePort(), passwordEncoder(), tokenService, authenticationManager(), userAuthMapper);
     }
 
     @Bean
     public IUserPrimaryPort userPrimaryPort() throws Exception {
-        return new UserUseCase( userAuthServ());
+        return new UserUseCase( userAuthServ(), userPersistencePort());
     }
 }
