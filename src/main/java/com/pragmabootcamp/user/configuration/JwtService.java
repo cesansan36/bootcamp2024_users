@@ -1,7 +1,7 @@
 package com.pragmabootcamp.user.configuration;
 
-import com.pragmabootcamp.user.adapters.authentication.UserAuth;
-import com.pragmabootcamp.user.domain.authentication.ITokenService;
+import com.pragmabootcamp.user.adapters.driven.authentication.UserAuth;
+import com.pragmabootcamp.user.adapters.driven.authentication.ITokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -1,6 +1,5 @@
-package com.pragmabootcamp.user.domain.primaryport.usecase;
+package com.pragmabootcamp.user.domain.primaryport;
 
-import com.pragmabootcamp.user.adapters.authentication.UserAuth;
 import com.pragmabootcamp.user.domain.model.Token;
 import com.pragmabootcamp.user.domain.model.User;
 

@@ -22,9 +22,6 @@ public class SecurityConfiguration {
         "/users/register/admin",
         "/users/login"
     };
-    private static final String[] ADMIN_LIST = {
-            "/users/register/tutor"
-    };
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter filter;
@@ -38,12 +35,10 @@ public class SecurityConfiguration {
 //                        .requestMatchers("/users/register/tutor").hasRole("ADMIN")
                         .anyRequest()
                         .authenticated()
-
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
-
         ;
 
         return http.build();

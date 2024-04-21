@@ -1,9 +1,12 @@
 package com.pragmabootcamp.user.domain.primaryport.usecase;
 
-import com.pragmabootcamp.user.adapters.authentication.IUserAuthServ;
+import com.pragmabootcamp.user.domain.exception.UserAlreadyExistsException;
+import com.pragmabootcamp.user.domain.primaryport.IUserPrimaryPort;
+import com.pragmabootcamp.user.domain.secondaryport.IUserAuthServ;
 import com.pragmabootcamp.user.domain.model.Token;
 import com.pragmabootcamp.user.domain.model.User;
 import com.pragmabootcamp.user.domain.secondaryport.IUserPersistencePort;
+import com.pragmabootcamp.user.domain.util.DomainConstants;
 
 public class UserUseCase implements IUserPrimaryPort {
 
@@ -18,8 +21,7 @@ public class UserUseCase implements IUserPrimaryPort {
     @Override
     public Token saveUser(User user) {
         if (userPersistencePort.existsByEmail(user.getEmail())) {
-            // TODO custom exception
-            throw new RuntimeException("User already exists");
+            throw new UserAlreadyExistsException(DomainConstants.USER_ALREADY_EXISTS_EXCEPTION_MESSAGE);
         }
 
         String token = userAuthServ.saveUser(user);

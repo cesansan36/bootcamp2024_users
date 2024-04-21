@@ -6,7 +6,6 @@ public class ControllerAdapterConstants {
         throw new IllegalStateException("Utility class");
     }
 
-
     public static final int ADMIN_ID = 1;
     public static final int TUTOR_ID = 2;
     public static final int STUDENT_ID = 3;

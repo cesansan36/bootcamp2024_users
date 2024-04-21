@@ -1,14 +1,15 @@
-package com.pragmabootcamp.user.adapters.authentication;
+package com.pragmabootcamp.user.adapters.driven.authentication.adapter;
 
-import com.pragmabootcamp.user.domain.authentication.ITokenService;
-import com.pragmabootcamp.user.domain.model.Token;
+import com.pragmabootcamp.user.adapters.driven.authentication.ITokenService;
+import com.pragmabootcamp.user.adapters.driven.authentication.UserAuth;
+import com.pragmabootcamp.user.adapters.driven.authentication.mapper.IUserAuthMapper;
 import com.pragmabootcamp.user.domain.model.User;
+import com.pragmabootcamp.user.domain.secondaryport.IUserAuthServ;
 import com.pragmabootcamp.user.domain.secondaryport.IUserPersistencePort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 
 public class UserAuthServ implements IUserAuthServ {
 
@@ -29,11 +30,6 @@ public class UserAuthServ implements IUserAuthServ {
     @Override
     public String saveUser(User user) {
 
-//        if (userPersistencePort.existsByEmail(user.getEmail())) {
-//            // TODO custom exception
-//            throw new RuntimeException("UserAuth already exists");
-//        }
-
         UserAuth userAuth = userAuthMapper.toUserAuth(user);
 
         userAuth.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -48,18 +44,6 @@ public class UserAuthServ implements IUserAuthServ {
 
         UserAuth found =(UserAuth)auth.getPrincipal();
 
-//        if (found.isEmpty()) {
-//            // TODO custom exception
-//            throw new RuntimeException("UserAuth not found");
-//        }
-
-
-
         return tokenService.generateToken(found);
     }
-
-//    @Override
-//    public void getUser(String email) {
-//        userPersistencePort.getUser(email);
-//    }
 }

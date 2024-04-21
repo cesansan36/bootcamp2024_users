@@ -1,6 +1,5 @@
 package com.pragmabootcamp.user.adapters.driving.http.rest.mapper;
 
-import com.pragmabootcamp.user.adapters.authentication.UserAuth;
 import com.pragmabootcamp.user.adapters.driving.http.rest.dto.request.AddUserRequest;
 import com.pragmabootcamp.user.adapters.driving.http.rest.dto.request.LoginUserRequest;
 import com.pragmabootcamp.user.domain.model.Role;

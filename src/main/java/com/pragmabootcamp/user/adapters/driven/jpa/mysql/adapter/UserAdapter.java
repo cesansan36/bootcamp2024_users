@@ -3,7 +3,7 @@ package com.pragmabootcamp.user.adapters.driven.jpa.mysql.adapter;
 import com.pragmabootcamp.user.adapters.driven.jpa.mysql.entity.UserEntity;
 import com.pragmabootcamp.user.adapters.driven.jpa.mysql.mapper.IUserEntityMapper;
 import com.pragmabootcamp.user.adapters.driven.jpa.mysql.repository.IUserRepository;
-import com.pragmabootcamp.user.adapters.authentication.UserAuth;
+import com.pragmabootcamp.user.adapters.driven.authentication.UserAuth;
 import com.pragmabootcamp.user.domain.secondaryport.IUserPersistencePort;
 import lombok.RequiredArgsConstructor;
 

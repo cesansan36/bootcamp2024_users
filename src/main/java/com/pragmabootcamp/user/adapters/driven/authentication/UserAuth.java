@@ -1,4 +1,4 @@
-package com.pragmabootcamp.user.adapters.authentication;
+package com.pragmabootcamp.user.adapters.driven.authentication;
 
 import com.pragmabootcamp.user.domain.model.Role;
 import org.springframework.security.core.GrantedAuthority;

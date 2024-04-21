@@ -1,6 +1,6 @@
 package com.pragmabootcamp.user.adapters.driven.jpa.mysql.mapper;
 
-import com.pragmabootcamp.user.adapters.authentication.UserAuth;
+import com.pragmabootcamp.user.adapters.driven.authentication.UserAuth;
 import com.pragmabootcamp.user.adapters.driven.jpa.mysql.entity.UserEntity;
 import org.mapstruct.Mapper;
 

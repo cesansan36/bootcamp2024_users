@@ -1,6 +1,6 @@
 package com.pragmabootcamp.user.domain.secondaryport;
 
-import com.pragmabootcamp.user.adapters.authentication.UserAuth;
+import com.pragmabootcamp.user.adapters.driven.authentication.UserAuth;
 
 import java.util.Optional;
 
