@@ -8,9 +8,11 @@ import com.pragmabootcamp.user.adapters.driving.http.rest.mapper.IUserRequestMap
 import com.pragmabootcamp.user.adapters.driving.http.rest.mapper.IUserResponseMapper;
 import com.pragmabootcamp.user.adapters.driving.http.rest.util.ControllerAdapterConstants;
 import com.pragmabootcamp.user.domain.primaryport.IUserPrimaryPort;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,7 @@ public class UserControllerAdapter {
     }
 
     @PostMapping("/register/admin")
+    @Operation(summary = "Register an admin", description = "Register an admin\n\nNo auth required")
     public ResponseEntity<UserResponse> registerAdmin(@RequestBody AddUserRequest request) {
 
         if (!request.getRoleId().equals(ControllerAdapterConstants.ADMIN_ID)) {
@@ -45,7 +48,9 @@ public class UserControllerAdapter {
     }
 
     @PostMapping("/register/tutor")
-    @Secured("ROLE_ADMIN")
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(summary = "Register a tutor", description = "Register a tutor\n\nCan only be used by admins")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponse> registerTutor(@RequestBody AddUserRequest request) {
 
         if (!request.getRoleId().equals(ControllerAdapterConstants.TUTOR_ID)) {
@@ -60,7 +65,9 @@ public class UserControllerAdapter {
     }
 
     @PostMapping("/register/student")
-    @Secured({"ROLE_ADMIN", "ROLE_TUTOR"})
+    @Operation(summary = "Register a student", description = "Register a tutor\n\nCan only be used by admins or tutors")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TUTOR')")
     public ResponseEntity<UserResponse> registerStudent(@RequestBody AddUserRequest request) {
 
         if (!request.getRoleId().equals(ControllerAdapterConstants.STUDENT_ID)) {
@@ -75,6 +82,7 @@ public class UserControllerAdapter {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Login", description = "No auth required")
     public ResponseEntity<UserResponse> login(@RequestBody LoginUserRequest request) {
         return ResponseEntity.ok(
                 userResponseMapper.toUserResponse(
@@ -83,17 +91,23 @@ public class UserControllerAdapter {
     }
 
     @PostMapping("/validate/restricted")
-    @Secured("ROLE_ADMIN")
+    @Operation(summary = "Validate restricted", description = "Checks if user is admin")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Boolean> validateRestricted() {
         return ResponseEntity.ok(true);
     }
     @PostMapping("/validate/any")
-    @Secured({"ROLE_ADMIN", "ROLE_TUTOR", "ROLE_STUDENT"})
+    @Operation(summary = "Validate any", description = "Checks if user is admin, tutor or student")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TUTOR') or hasRole('ROLE_STUDENT')")
     public ResponseEntity<Boolean> validateAny() {
         return ResponseEntity.ok(true);
     }
 
     @PostMapping("/test")
+    @Operation(summary = "Test endpoint", description = "No auth required")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<String> testEndpoint() {
         return ResponseEntity.ok("access granted こんにちは 🍻");
     }

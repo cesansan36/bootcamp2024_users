@@ -20,7 +20,13 @@ public class SecurityConfiguration {
 
     private static final String[] WHITE_LIST = {
         "/users/register/admin",
-        "/users/login"
+        "/users/login",
+        "/swagger-resources",
+        "/swagger-resources/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/v3/api-docs",
+        "/v3/api-docs/**"
     };
 
     private final AuthenticationProvider authenticationProvider;

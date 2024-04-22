@@ -49,7 +49,7 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IUserPrimaryPort userPrimaryPort() throws Exception {
+    public IUserPrimaryPort userPrimaryPort(){
         return new UserUseCase( userAuthServ(), userPersistencePort());
     }
 }
