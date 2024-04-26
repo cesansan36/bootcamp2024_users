@@ -38,7 +38,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(WHITE_LIST)
                         .permitAll()
-//                        .requestMatchers("/users/register/tutor").hasRole("ADMIN")
                         .anyRequest()
                         .authenticated()
                 )

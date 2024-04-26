@@ -24,5 +24,4 @@ application:
 #      expiration: 43200000 # 12 Hours
 #      expiration: 86400000 # 1 day
       expiration: 604800000 # 7 days
-      refresh-token:
-        expiration: 604800000 # 7 days
+      user-generator: ${user_generator}

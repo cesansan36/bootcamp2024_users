@@ -1,20 +1,18 @@
 package com.pragmabootcamp.user.configuration;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.pragmabootcamp.user.adapters.driven.authentication.UserAuth;
 import com.pragmabootcamp.user.adapters.driven.authentication.ITokenService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,74 +22,47 @@ public class JwtService implements ITokenService {
     private String secretKey;
     @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
-    @Value("${application.security.jwt.refresh-token.expiration}")
-    private long refreshExpiration;
 
-    public String extractUsername(String token) {
-    return extractClaim(token, Claims::getSubject);
-  }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-    public String generateJwtToken(UserDetails userDetails) {
-    return generateJwtToken(new HashMap<>(), userDetails);
-  }
-
-    public String generateJwtToken(Map<String, Object> extraClaims,
-                                   UserDetails userDetails) {
-
-        return buildToken(extraClaims, userDetails, jwtExpiration);
-    }
-
-    public String generateRefreshToken(UserDetails userDetails) {
-        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
-    }
-
-    private String buildToken(Map<String, Object> extraClaims,
-                              UserDetails userDetails,
-                              long expiration) {
-
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
-    }
-
-    private boolean isTokenExpired(String token) {
-    return extractExpiration(token).before(new Date());
-  }
-
-    private Date extractExpiration(String token) {
-    return extractClaim(token, Claims::getExpiration);
-  }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
+    @Value("${application.security.jwt.user-generator}")
+    private String userGenerator;
 
     @Override
     public String generateToken(UserAuth userAuthDetails) {
-        return generateJwtToken(userAuthDetails);
+        Algorithm algorithm = Algorithm.HMAC256(this.secretKey);
+
+        String username = userAuthDetails.getUsername();
+        String authorities = userAuthDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        return JWT.create()
+                .withIssuer(this.userGenerator)
+                .withSubject(username)
+                .withClaim("authorities", authorities)
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(System.currentTimeMillis() + this.jwtExpiration))
+                .sign(algorithm);
+    }
+    public DecodedJWT validateToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(this.secretKey);
+
+            JWTVerifier verifier = JWT.require(algorithm)
+                    .withIssuer(this.userGenerator)
+                    .build();
+
+            return verifier.verify(token);
+        } catch (JWTVerificationException exception) {
+            throw new JWTVerificationException("Token invalid, not Authorized");
+        }
+    }
+
+    public String extractUsername(DecodedJWT decodedJWT){
+        return decodedJWT.getSubject();
+    }
+
+    public Claim getSpecificClaim(DecodedJWT decodedJWT, String claimName) {
+        return decodedJWT.getClaim(claimName);
     }
 }
